@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block head %}
+
+{% if posts%}
+
+{% else %}
+{%if log %}
+
+<h1 class="h3 mb-2 text-gray-800">Follow someone</h1>
+<p class="mb-4">To See posts, you should follow someone</p>
+{% else %}
+<h1 class="h3 mb-2 text-gray-800">Sign In</h1>
+<p class="mb-4">Please Sign in or Sign up to see other's post!</p>
+{% endif %}
+{% endif %}
+
+{% block foot %}
+{% endblock %}
+{% endblock %}

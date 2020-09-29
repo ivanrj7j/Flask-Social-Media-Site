@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block head %}
+
+<div class="alert alert-warning alert-dismissible fade show" id="ale" role="alert">
+    <button type="button" class="close" id="close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong>Please Fill out the feild or check that the passwords are matching!</strong>
+</div>
+
+
+<div class="container col-md-9">
+    <div class="p-5">
+        <div class="text-center">
+            <h1 class="h4 text-gray-900 mb-4">Welcome to {{title}}!</h1>
+        </div>
+        <div class="user">
+            <div class="form-group">
+                <input type="email" class="form-control form-control-user" id="email" aria-describedby="emailHelp"
+                    placeholder="Enter Email Address...">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control form-control-user" id="password" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control form-control-user" id="rp" placeholder="Repeat Password">
+            </div>
+            <div class="form-group">
+                <input type="name" class="form-control form-control-user" id="name" placeholder="Name">
+            </div>
+
+            <button class="btn btn-primary btn-user btn-block" id="buttons">Sign Up</button>
+
+            <div class="text-center">
+                <a class="small" href="/signin">Already have an account?</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var email, xhr, password, rp, btn, fd, usn, alerts, closer, lat, lon;
+        email = document.getElementById('email');
+        password = document.getElementById('password');
+        rp = document.getElementById('rp');
+        btn = document.getElementById('buttons');
+        usn = document.getElementById('name');
+        xhr = new XMLHttpRequest();
+        fd = new FormData();
+        alerts = document.getElementById('ale');
+        alerts.style.display = 'none';
+        closer = document.getElementById('close')
+        closer.addEventListener('click', function () {
+            alerts.style.display = 'none'
+        })
+
+
+
+        btn.addEventListener('click', function () {
+            if (email.value != '' && password.value != '' && rp.value != '' && usn.value != '' && password.value == rp.value) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(showPosition, err);
+                } else {
+                    lat = "undefined";
+                    lon = "undefined"
+                }
+                function showPosition(position) {
+                    lat = position.coords.latitude;
+                    lon = position.coords.longitude;
+                }
+                function err(position) {
+                    lat = "undefined";
+                    lon = "undefined";
+                }
+
+                fd.append('email', email.value);
+                fd.append('name', usn.value);
+                fd.append('password', password.value);
+                fd.append('lat', lat);
+                fd.append('lon', lon);
+                xhr.open('POST', '/insert');
+                xhr.send(fd)
+                xhr.addEventListener('load', function () {
+                   window.open('/', '_self')
+                })
+
+            } else {
+
+                alerts.style.display = 'block';
+
+            }
+        })
+    </script>
+
+    {% block foot %}
+    {% endblock %}
+    {% endblock %}
