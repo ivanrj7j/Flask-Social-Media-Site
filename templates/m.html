@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block head %}
+
+
+<h1>New Messages</h1>
+{% if mess %}
+{% for foll in mess %}
+{% if foll.user == email %}
+
+<a href="/message/{{foll.sender}}">
+        {% else %}
+        <a href="/message/{{foll.user}}">
+                {% endif %}
+
+                <div class="card shadow mb-4">
+                        <div class="card-header py-4">
+                                {% if foll.user == email %}
+                                {{foll.sender}}
+                                {% else %}
+                                {{foll.user}}
+                                {% endif %}
+
+                        </div>
+                </div>
+        </a>
+        {% endfor %}
+
+        {% else %}
+        <p class="text-danger my-5">You Dont Have any messages</p>
+        {% endif %}
+        <hr>
+        <h2>Following</h2>
+        {% if following %}
+        {% for foll in following %}
+        <a href="/message/{{foll.user}}">
+                <div class="card shadow mb-4">
+                        <div class="card-header py-4">
+                                {{foll.user}}
+                        </div>
+                </div>
+        </a>
+        {% endfor %}
+
+        {% else %}
+        <h1>You Dont Have Followers</h1>
+        {% endif %}
+        <hr>
+        <h2>Followers</h2>
+        {% if follower %}
+        {% for foll in follower %}
+        <a href="/message/{{foll.follower}}">
+                <div class="card shadow mb-4">
+                        <div class="card-header py-4">
+                                {{foll.follower}}
+                        </div>
+                </div>
+        </a>
+        {% endfor %}
+
+        {% else %}
+        <h1>You Dont Have Followers</h1>
+        {% endif %}
+
+
+        {% block foot %}
+        {% endblock %}
+        {% endblock %}

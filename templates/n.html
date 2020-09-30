@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block head %}
+
+{% if content %}
+{% for con in content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        {% if con.typ == 'follow' %}
+        <h6 class="m-0 font-weight-bold text-primary"> <i class="fa fa-plus" aria-hidden="true"></i> New Follower</h6>
+        {% else %}
+        <h6 class="m-0 font-weight-bold text-primary">New Notification</h6>
+        {% endif %}
+        
+    </div>
+    <div class="card-body">
+        <h5 class="bold">{{con.message}}</h5>
+        <p>{{con.date}}</p>
+    </div>
+</div>
+{% endfor %}
+
+{% else %}
+<h1>Nothing To Show here...</h1>
+{% endif %}
+
+
+{% block foot %}
+{% endblock %}
+{% endblock %}

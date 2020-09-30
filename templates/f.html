@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block head %}
+
+{% if follower %}
+        {% for foll in follower %}
+                <a href="/view/{{foll.follower}}">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-4">
+                                {{foll.follower}}
+                        </div>
+                    </div>
+                </a>
+        {% endfor %}
+        
+{% else %}
+        <h1>You Dont Have Followers</h1>
+{% endif %}
+
+
+{% block foot %}
+{% endblock %}
+{% endblock %}

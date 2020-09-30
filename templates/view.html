@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block head %}
+
+<div class="container bg-dark" style="padding: 30px;">
+    <div class="img" style="width: 200px; height:200px; border-radius:50%; overflow:hidden;">
+        <img src="{{url_for('static', filename=result.pic)}}" alt="" width="100%" height="100%">
+
+    </div>
+    <h1 class="h1 mb-2 text-light text-center">{{result.name}}</h1>
+    {% if f %}
+    <button class="btn btn-primary" id="btn"><i class="fa fa-window-close" id="close" aria-hidden="true"></i> <span class="spinner-border border-sm d-none" id="spin"></span> <span id="txt">Unfollow</span></button>
+    {% else %}
+    <button class="btn btn-primary btn-lg" id="friend"><i class="fas fa-user-friends" id="ficon"></i><span class="spinner-border border-sm d-none" id="spin"></span><i class="fa fa-check d-none" id="tick"aria-hidden="true"></i> <span id="txt">Follow</span></button>
+    {% endif %}
+</div>
+<div class="container my-4">
+    <h3>Email: {{result.email}}</h3>
+    <h5>Joined on {{result.date}}</h5>
+</div>
+
+<hr>
+{% if f %}
+<script>
+    var btn = document.getElementById('btn');
+    var spin = document.getElementById('spin');
+    var closer = document.getElementById('close');
+    var txt = document.getElementById('txt');
+    var fd = new FormData();
+    var xhr = new XMLHttpRequest();
+    
+    btn.addEventListener('click', function(){
+        closer.classList.add('d-none');
+        spin.classList.remove('d-none');
+        txt.innerHTML = 'Unfollowing'
+        fd.append('follower', '{{email}}')
+        fd.append('user', '{{result.email}}')
+        fd.append('action', 'unfollow')
+        xhr.open('POST', '/frm')
+        xhr.send(fd)
+        xhr.addEventListener('load', function(){
+            spin.classList.add('d-none')
+            closer.classList.remove('d-none')
+            txt='Unfollowing'
+        })
+    })
+</script>
+{% else %}
+<script>
+    var btn = document.getElementById('friend');
+    var ficon = document.getElementById('ficon');
+    var spin = document.getElementById('spin');
+    var tick = document.getElementById('tick');
+    var txt = document.getElementById('txt');
+    var fd = new FormData();
+    var xhr = new XMLHttpRequest();
+
+    btn.addEventListener('click', function(){
+        ficon.classList.add('d-none');
+        spin.classList.remove('d-none');
+        txt.innerHTML = 'Following...'
+        fd.append('follower', '{{email}}')
+        fd.append('user', '{{result.email}}')
+        fd.append('action', 'follow')
+        xhr.open("POST", '/frm')
+        xhr.send(fd)
+        xhr.addEventListener('load', function(){
+            spin.classList.add('d-none');
+            tick.classList.remove('d-none')
+            txt.innerHTML = 'Following';
+            setTimeout(function(){btn.classList.add('d-none')}, 5000)
+        });
+        
+
+    })
+
+</script>
+{% endif %}
+
+{% block foot %}
+{% endblock %}
+{% endblock %}
