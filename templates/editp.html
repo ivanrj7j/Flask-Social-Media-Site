@@ -7,7 +7,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Change Profile</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -36,7 +36,7 @@
     <button class="btn btn-warning" id="" data-toggle="modal" data-target="#modelId"><i class="fas fa-pen    "></i>
         Change Image</button>
     <h1 class="h1 mb-2 text-light text-center">{{name}}</h1>
-    <a href="/editp" class="btn btn-primary"><i class="fas fa-pen"></i> Edit Profile</a>
+    <!-- <a href="/editp" class="btn btn-primary"><i class="fas fa-pen"></i> Edit Profile</a> -->
 </div>
 <div class="container my-4">
     <h3>Email: {{email}}</h3>
@@ -86,9 +86,21 @@
                 progb.style.width = '0%';
                 progb.innerHTML = '0% uploaded';
                 xhr.open('POST', '/changep');
-                xhr.send(fd);
                 closer.classList.remove('disabled')
                 save.classList.add('d-none')
+                xhr.upload.addEventListener('progress', function(e){
+                    var per = (e.loaded / e.total) * 100;
+                    progb.style.width = per + "%";
+                    progb.innerHTML = Math.round(per) + "%"
+                })
+                xhr.addEventListener('load', function(){
+                    location.reload()
+                })
+                closer.addEventListener('click', function(){
+                    xhr.abort();
+                    location.reload()
+                })
+                xhr.send(fd);
             })
 
         } else {
