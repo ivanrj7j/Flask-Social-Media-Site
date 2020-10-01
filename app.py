@@ -290,7 +290,11 @@ def message(user):
 @app.route('/me', methods=['GET', 'POST'])
 def me():
     if "email" in session:
-        return "HI"
+        profile = User.query.filter_by(email=session['email']).first()
+        profile = profile.pic
+        notifications = Notifications.query.filter_by(email=session['email']).order_by(desc(Notifications.id)).all()
+        totn = str(len(notifications))
+        return render_template("me.html", log=True, pic=profile, title=session['name'], email=session['email'], notifications=notifications[:3], totaln=totn, name=session['name'])
     else:
         redirect('/')
 
