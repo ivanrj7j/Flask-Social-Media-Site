@@ -395,5 +395,9 @@ def postimg():
     else:
         return redirect('/')
 
+@app.errorhandler(404)
+def resource_not_found(e):
+    return render_template('error.html', error=str(e)), 404
+
 if __name__ == '__main__':
     app.run(debug=True)
