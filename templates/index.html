@@ -7,11 +7,11 @@
 {%if log %}
 
 {% if postss %}
-<div class="container">
+<div class="container" id="contents">
     {% for posts in postss %}
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">{{posts.user}}</h6>
+            <h6 class="m-0 font-weight-bold text-primary"><a href="/view/{{posts.user}}">{{posts.user}}</a></h6>
         </div>
         <div class="card-body">
             <p>{{posts.body|safe}}</p>
@@ -30,6 +30,7 @@
 
 
 
+
 {% else %}
 <h1 class="h3 mb-2 text-gray-800">Follow someone</h1>
 <p class="mb-4">To See posts, you should follow someone</p>
@@ -42,5 +43,10 @@
 {% endif %}
 
 {% block foot %}
+<script>
+    setInterval(function(){
+        $('#contents').load(' #contents')
+    }, 1000*20)
+</script>
 {% endblock %}
 {% endblock %}

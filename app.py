@@ -70,7 +70,7 @@ def hello():
         log= True
         notifications = Notifications.query.filter_by(email=email).order_by(desc(Notifications.id)).all()
         totn = str(len(notifications))
-        hi = db.engine.execute(f"SELECT * FROM `post` WHERE `user` in (SELECT `user` FROM `frnds` WHERE `follower`='{email}') ORDER BY `id` DESC")
+        hi = db.engine.execute(f"SELECT * FROM `post` WHERE `user` in (SELECT `user` FROM `frnds` WHERE `follower`='{email}') OR `user`='{email}' ORDER BY `id` DESC")
         
     else:
         email = "Me"
@@ -210,6 +210,8 @@ def view(email):
         notifications = [{'date':'hi', 'message':'wow'}]
         totn=0
     user_name = User.query.filter_by(email = email).first()
+    posts = Post.query.filter_by(user=email).order_by(desc(Post.id))
+
     if user_name == None:
         return redirect('/')
     check = Frnds.query.filter_by(user=email, follower=em).first()
@@ -218,7 +220,7 @@ def view(email):
     else:
         frnds = True
     # user = 
-    return render_template('view.html', log=log, title = user_name.name, pic=pic, result=user_name, email=em, f=frnds, notifications=notifications[:3], totaln=totn)
+    return render_template('view.html', log=log, title = user_name.name, pic=pic, result=user_name, email=em, f=frnds, notifications=notifications[:3], totaln=totn, name=name, postss=posts)
 
 
 @app.route('/frm', methods=['GET', 'POST'])
@@ -310,8 +312,9 @@ def me():
         profile = profile.pic
         notifications = Notifications.query.filter_by(email=session['email']).order_by(desc(Notifications.id)).all()
         totn = str(len(notifications))
+        posts = Post.query.filter_by(user=session['email']).order_by(desc(Post.id))
         q = User.query.filter_by(email=session['email']).first()
-        return render_template("me.html", log=True, pic=profile, title=session['name'], email=session['email'], notifications=notifications[:3], totaln=totn, name=session['name'], q=q)
+        return render_template("me.html", log=True, pic=profile, title=session['name'], email=session['email'], notifications=notifications[:3], totaln=totn, name=session['name'], q=q, postss=posts)
     else:
         redirect('/')
 
