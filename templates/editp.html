@@ -85,6 +85,10 @@
                 prog.classList.remove('d-none');
                 progb.style.width = '0%';
                 progb.innerHTML = '0% uploaded';
+                xhr.open('POST', '/changep');
+                xhr.send(fd);
+                closer.classList.remove('disabled')
+                save.classList.add('d-none')
             })
 
         } else {

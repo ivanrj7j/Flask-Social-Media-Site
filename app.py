@@ -5,6 +5,9 @@ from hashlib import md5
 from flask_sqlalchemy import *
 from datetime import datetime
 from sqlalchemy import desc
+import uuid
+from random import randint
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/softalk'
@@ -328,6 +331,22 @@ def editp():
         return render_template("editp.html", log=True, pic=profile, title=session['name'], email=session['email'], notifications=notifications[:3], totaln=totn, name=session['name'], q=q, style='css/editp.css')
     else:
         redirect('/')
+
+@app.route('/changep', methods=['GET', 'POST'])
+def changep():
+    if request.method == 'POST':
+        file = request.files['img'];
+        user = request.form['user'];
+        filename = file.filename
+        filetype = filename.split('.')[-1]
+        newName = str(uuid.uuid1()) + '.' + filetype
+        user = User.query.filter_by(email=session['email']).first()
+        user.pic = 'profile/' + newName
+        db.session.commit()
+        file.save(os.path.join('static/profile', newName))
+        return f"{newName}"
+    else:
+        return redirect('/')
 
 if __name__ == '__main__':
     app.run(debug=True)
