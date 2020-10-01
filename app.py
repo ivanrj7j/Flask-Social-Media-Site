@@ -317,5 +317,17 @@ def sendm():
     else:
         return redirect('/')
 
+@app.route('/editp', methods=['GET', 'POST'])
+def editp():
+    if "email" in session:
+        profile = User.query.filter_by(email=session['email']).first()
+        profile = profile.pic
+        notifications = Notifications.query.filter_by(email=session['email']).order_by(desc(Notifications.id)).all()
+        totn = str(len(notifications))
+        q = User.query.filter_by(email=session['email']).first()
+        return render_template("editp.html", log=True, pic=profile, title=session['name'], email=session['email'], notifications=notifications[:3], totaln=totn, name=session['name'], q=q, style='css/editp.css')
+    else:
+        redirect('/')
+
 if __name__ == '__main__':
     app.run(debug=True)
