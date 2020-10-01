@@ -28,6 +28,16 @@ class User(db.Model):
     longitude = db.Column(db.String())
     pic = db.Column(db.String(), default='profile/default.JPG')
 
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.String())
+    body = db.Column(db.String())
+    file = db.Column(db.String())
+    likes = db.Column(db.Integer, default=0)
+    link = db.Column(db.String())
+    shares = db.Column(db.Integer, default=0)
+    date = db.Column(db.DateTime(), default=datetime.now())
+    
 
 class Notifications(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -366,9 +376,16 @@ def postimg():
         body = request.form['body']
         user = request.form['user']
         img = request.files['file']
+        uid = str(uuid.uuid1())
+        filetype = img.filename.split('.')[-1]
+        newname = uid + '.' + filetype
         body = body.replace('\n', '<br>')
+        p = Post(user=user, body=body, file=newname, link=uid)
+        db.session.add(p)
+        db.session.commit()
+        img.save(os.path.join('static/upload', newname))
 
-        return f"{img} {body}"
+        return f"{newname} {body}"
     else:
         return redirect('/')
 
