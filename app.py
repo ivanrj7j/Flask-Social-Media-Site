@@ -348,5 +348,29 @@ def changep():
     else:
         return redirect('/')
 
+
+@app.route('/post', methods=['GET', 'POST'])
+def post():
+    if "email" in session:
+        profile = User.query.filter_by(email=session['email']).first()
+        profile = profile.pic
+        notifications = Notifications.query.filter_by(email=session['email']).order_by(desc(Notifications.id)).all()
+        totn = str(len(notifications))
+        return render_template('post.html', log=True, pic=profile, email=session['email'], notifications=notifications[:3], totaln=totn, name=session['name'], title='Post')
+    else:
+        return redirect('/')
+
+@app.route('/postimg', methods=['GET', 'POST'])
+def postimg():
+    if request.method == 'POST':
+        body = request.form['body']
+        user = request.form['user']
+        img = request.files['file']
+        body = body.replace('\n', '<br>')
+
+        return f"{img} {body}"
+    else:
+        return redirect('/')
+
 if __name__ == '__main__':
     app.run(debug=True)
