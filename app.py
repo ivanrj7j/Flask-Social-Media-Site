@@ -70,6 +70,8 @@ def hello():
         log= True
         notifications = Notifications.query.filter_by(email=email).order_by(desc(Notifications.id)).all()
         totn = str(len(notifications))
+        hi = db.engine.execute(f"SELECT * FROM `post` WHERE `user` in (SELECT `user` FROM `frnds` WHERE `follower`='{email}') ORDER BY `id` DESC")
+        
     else:
         email = "Me"
         log= False
@@ -77,7 +79,8 @@ def hello():
         name = 'Me'
         notifications = [{'date':'hi', 'message':'wow'}]
         totn=0
-    return render_template('index.html', title='Softalk', log=log, pic=profile, name=name, notifications=notifications[:3], totaln=totn)
+        hi = None
+    return render_template('index.html', title='Softalk', log=log, pic=profile, name=name, notifications=notifications[:3], totaln=totn, postss=hi)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():

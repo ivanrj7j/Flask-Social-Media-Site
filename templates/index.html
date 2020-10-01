@@ -6,8 +6,35 @@
 {% else %}
 {%if log %}
 
+{% if postss %}
+<div class="container">
+    {% for posts in postss %}
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">{{posts.user}}</h6>
+        </div>
+        <div class="card-body">
+            <p>{{posts.body|safe}}</p>
+            <hr>
+            <center><img src="{{url_for('static', filename='upload/'+posts.file)}}" alt="" width="80%"
+                    style="padding: 10px; border-radius:20px;"></center>
+        </div>
+        <div class="card-footer py-3">
+            <small class="m-0 font-weight-bold text-primary">{{posts.date}}</small>
+        </div>
+    </div>
+
+    {% endfor %}
+</div>
+</div>
+
+
+
+{% else %}
 <h1 class="h3 mb-2 text-gray-800">Follow someone</h1>
 <p class="mb-4">To See posts, you should follow someone</p>
+{% endif %}
+
 {% else %}
 <h1 class="h3 mb-2 text-gray-800">Sign In</h1>
 <p class="mb-4">Please Sign in or Sign up to see other's post!</p>
