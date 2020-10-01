@@ -287,6 +287,13 @@ def message(user):
     else:
         return redirect('/')
 
+@app.route('/me', methods=['GET', 'POST'])
+def me():
+    if "email" in session:
+        return "HI"
+    else:
+        redirect('/')
+
 @app.route('/sendm', methods=['GET', 'POST'])
 def sendm():
     if request.method == 'POST':
