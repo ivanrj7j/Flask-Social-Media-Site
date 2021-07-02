@@ -4,13 +4,12 @@ from flask import sessions
 from hashlib import md5
 from flask_sqlalchemy import *
 from datetime import datetime
-from sqlalchemy import desc
 import uuid
 from random import randint
 import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root@localhost/softalk'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'jfksfjfhjghjghfjghdjghkjgjhghkghdkgjhkgjhkgjh'
 db = SQLAlchemy(app)
